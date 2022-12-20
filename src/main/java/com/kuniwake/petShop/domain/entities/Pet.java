@@ -18,4 +18,13 @@ public class Pet {
     private String breed;
     private LocalDate age;
 
+    public Pet() {
+    }
+
+    public Pet(String name, String breed, LocalDate age) {
+        this.name = name;
+        this.breed = breed;
+        this.age = age;
+    }
+
 }

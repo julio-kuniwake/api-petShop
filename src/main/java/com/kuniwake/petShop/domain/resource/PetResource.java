@@ -1,14 +1,13 @@
 package com.kuniwake.petShop.domain.resource;
 
 import com.kuniwake.petShop.dto.PetDto;
+import com.kuniwake.petShop.form.PetForm;
 import com.kuniwake.petShop.service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class PetResource {
             return new ResponseEntity<>(this.petService.findAllPet(name), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new IllegalArgumentException("Não foi possivel Buscar Pets");
+            throw new IllegalArgumentException("Não foi possivel Buscar Pets!");
         }
     }
 
@@ -35,7 +34,37 @@ public class PetResource {
             return this.petService.findByIdPet(id);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new IllegalArgumentException(e);
+            throw new IllegalArgumentException("Não foi possivel buscar o Pet!");
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<PetDto> sendSevePet(@RequestBody PetForm petForm, UriComponentsBuilder uriBuilder) {
+        try {
+            return this.petService.savePet(petForm, uriBuilder);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("Não foi possivel salvar!");
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PetDto> sendUpdatePet(@PathVariable Long id, @RequestBody PetForm petForm) {
+        try {
+            return this.petService.updatePet(id, petForm);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("Não foi possivel atualizar Pet!");
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> sendRemovePet(@PathVariable Long id) {
+        try {
+            return this.petService.deletePet(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("Não foi possivel deletar Pet!");
         }
     }
 }
