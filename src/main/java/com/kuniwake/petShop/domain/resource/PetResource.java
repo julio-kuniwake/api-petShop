@@ -3,6 +3,7 @@ package com.kuniwake.petShop.domain.resource;
 import com.kuniwake.petShop.dto.PetDto;
 import com.kuniwake.petShop.form.PetForm;
 import com.kuniwake.petShop.service.PetService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,7 @@ public class PetResource {
     }
 
     @PostMapping
-    public ResponseEntity<PetDto> sendSevePet(@RequestBody PetForm petForm, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<PetDto> sendSevePet(@RequestBody @Valid PetForm petForm, UriComponentsBuilder uriBuilder) {
         try {
             return this.petService.savePet(petForm, uriBuilder);
         } catch (Exception e) {
@@ -48,7 +49,7 @@ public class PetResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<PetDto> sendUpdatePet(@PathVariable Long id, @RequestBody PetForm petForm) {
+    public ResponseEntity<PetDto> sendUpdatePet(@PathVariable Long id, @RequestBody @Valid PetForm petForm) {
         try {
             return this.petService.updatePet(id, petForm);
         } catch (Exception e) {

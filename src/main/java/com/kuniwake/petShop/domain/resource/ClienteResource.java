@@ -3,6 +3,7 @@ package com.kuniwake.petShop.domain.resource;
 import com.kuniwake.petShop.dto.ClientDto;
 import com.kuniwake.petShop.form.ClientForm;
 import com.kuniwake.petShop.service.ClientService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,7 @@ public class ClienteResource {
     }
 
     @PostMapping
-    public ResponseEntity<ClientDto> sendSaveClient(@RequestBody ClientForm clientForm, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<ClientDto> sendSaveClient(@RequestBody @Valid ClientForm clientForm, UriComponentsBuilder uriBuilder) {
         try {
             return this.clientService.saveClient(clientForm, uriBuilder);
         } catch (Exception e) {
@@ -48,7 +49,7 @@ public class ClienteResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ClientDto> sendUpdateClient(@PathVariable Long id, @RequestBody ClientForm clientForm) {
+    public ResponseEntity<ClientDto> sendUpdateClient(@PathVariable Long id, @RequestBody @Valid ClientForm clientForm) {
         try {
             return this.clientService.updateClient(id, clientForm);
         } catch (Exception e) {

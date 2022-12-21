@@ -3,6 +3,7 @@ package com.kuniwake.petShop.domain.resource;
 import com.kuniwake.petShop.dto.AddressDto;
 import com.kuniwake.petShop.form.AddressForm;
 import com.kuniwake.petShop.service.AddressService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,7 @@ public class AddressResource {
     }
 
     @PostMapping
-    public ResponseEntity<AddressDto> sendSaveAddress(@RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<AddressDto> sendSaveAddress(@RequestBody @Valid AddressForm addressForm, UriComponentsBuilder uriBuilder) {
         try {
             return this.addressService.saveAddress(addressForm, uriBuilder);
         } catch (Exception e) {
@@ -47,7 +48,7 @@ public class AddressResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<AddressDto> sendUpdateAddress(@PathVariable Long id, @RequestBody AddressForm addressForm) {
+    public ResponseEntity<AddressDto> sendUpdateAddress(@PathVariable Long id, @RequestBody @Valid AddressForm addressForm) {
         try {
             return this.addressService.updateAddres(id, addressForm);
         } catch (Exception e) {
