@@ -1,10 +1,13 @@
 package com.kuniwake.petShop.service;
 
+import com.kuniwake.petShop.domain.entities.Client;
 import com.kuniwake.petShop.domain.entities.Pet;
+import com.kuniwake.petShop.domain.repository.ClientRepository;
 import com.kuniwake.petShop.domain.repository.PetRepository;
 import com.kuniwake.petShop.dto.PetDto;
 import com.kuniwake.petShop.form.PetForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,15 +24,18 @@ public class PetService {
 
     @Autowired
     PetRepository petRepository;
+    @Autowired
+    ClientRepository clientRepository;
 
-    public List<PetDto> findAllPet(String name) {
+
+    public ResponseEntity<List<PetDto>> findAllPet(String name) {
         List<Pet> pets;
         if (name == null || name.isEmpty()) {
             pets = petRepository.findAll();
         } else {
             pets = petRepository.findByName(name);
         }
-        return PetDto.convertToPetDto(pets);
+        return new ResponseEntity<>(PetDto.convertToPetDto(pets), HttpStatus.OK);
     }
 
     public ResponseEntity<PetDto> findByIdPet(Long id) {
@@ -40,19 +46,25 @@ public class PetService {
     }
 
     public ResponseEntity<PetDto> savePet(PetForm petForm, UriComponentsBuilder uriBuilder) {
-        Pet pet = petForm.convertToPet();
-        petRepository.save(pet);
-        URI uri = uriBuilder.path("/pet/{id}").buildAndExpand(pet.getId()).toUri();
-        return ResponseEntity.created(uri).body(new PetDto(pet));
+        Optional<Client> clientOpt = clientRepository.findById(petForm.getClientId());
+        if (clientOpt.isPresent()) {
+            Pet pet = petForm.convertToPet(clientOpt.get());
+            petRepository.save(pet);
+            URI uri = uriBuilder.path("/pet/{id}").buildAndExpand(pet.getId()).toUri();
+            return ResponseEntity.created(uri).body(new PetDto(pet));
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     public ResponseEntity<PetDto> updatePet(Long id, PetForm petForm) {
-        Optional<Pet> pet = petRepository.findById(id);
-        if (pet.isPresent()) {
-            pet.get().setName(petForm.getName());
-            pet.get().setBreed(petForm.getBreed());
-            pet.get().setAge(petForm.getAge());
-            return ResponseEntity.ok(petForm.convertToPetDto(petRepository.save(pet.get())));
+        Optional<Pet> petOpt = petRepository.findById(id);
+        if (petOpt.isPresent()) {
+            petOpt.get().setName(petForm.getName());
+            petOpt.get().setBreed(petForm.getBreed());
+            petOpt.get().setAge(petForm.getAge());
+            Pet pet = petRepository.save(petOpt.get());
+
+            return ResponseEntity.ok(petForm.convertToPetDto(pet));
         }
         return ResponseEntity.notFound().build();
     }

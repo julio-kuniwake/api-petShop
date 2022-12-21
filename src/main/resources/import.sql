@@ -1,3 +1,12 @@
-INSERT INTO tb_pet(name, breed, age) VALUES('Luna', 'Shitsu', '2018-05-06');
-INSERT INTO tb_pet(name, breed, age) VALUES('Starkao', 'Tomba', '2019-01-01');
-INSERT INTO tb_pet(name, breed, age) VALUES('Nina', 'Iyazapsu', '2015-08-15');
+--INSERT INTO tb_client(first_name, last_name, email, password, cpf, birth_date, active, address_id)
+--    VALUES('Julio', 'kuniwake', 'julio@gmail.com', '4455jtk', '08445326994', '1988-05-06', true, 1);
+--INSERT INTO tb_client(first_name, last_name, email, password, cpf, birth_date, active, address_id)
+--    VALUES('Carol', 'Cardoso', 'ana@gmail.com', '22amc', '10625836945', '1992-05-06', true, 2);
+--
+--INSERT INTO tb_pet(name, breed, age, owner_id) VALUES('Luna', 'Shitsu', '2018-05-06', 1);
+--INSERT INTO tb_pet(name, breed, age, owner_id) VALUES('Starkao', 'Tomba', '2019-01-01', 1);
+--INSERT INTO tb_pet(name, breed, age, owner_id) VALUES('Nina', 'Iyazapsu', '2015-08-15', 2);
+--
+--INSERT INTO tb_address(cep, state, city, district, street, number) VALUES('38750004', 'MG', 'Patrocinio', 'Centro', 'Rua dos Tijuco', 53);
+--INSERT INTO tb_address(cep, state, city, district, street, number) VALUES('30160080', 'MG', 'Belo Horizonte', 'Savassi', 'Rua dos Timbiras', 877);
+--INSERT INTO tb_address(cep, state, city, district, street, number) VALUES('78560850', 'SP', 'Franca', 'Centro', 'Rua dos Aimores', 650);

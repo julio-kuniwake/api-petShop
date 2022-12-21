@@ -1,7 +1,9 @@
 package com.kuniwake.petShop.form;
 
+import com.kuniwake.petShop.domain.entities.Client;
 import com.kuniwake.petShop.domain.entities.Pet;
 import com.kuniwake.petShop.dto.PetDto;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,15 +11,18 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class PetForm {
+public class PetForm { // 'PetForm' usado quando é uma requisição que o Usuario envia para API
 
     private Long id;
+    @NotNull
     private String name;
     private String breed;
     private LocalDate age;
+    @NotNull
+    private Long clientId;
 
-    public Pet convertToPet() {
-        return new Pet(name, breed, age);
+    public Pet convertToPet(Client client) {
+        return new Pet(name, breed, age, client);
     }
 
     public PetDto convertToPetDto(Pet pet) {

@@ -3,8 +3,8 @@ package com.kuniwake.petShop.domain.resource;
 import com.kuniwake.petShop.dto.PetDto;
 import com.kuniwake.petShop.form.PetForm;
 import com.kuniwake.petShop.service.PetService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,7 +21,7 @@ public class PetResource {
     @GetMapping
     public ResponseEntity<List<PetDto>> getAllPet(String name) {
         try {
-            return new ResponseEntity<>(this.petService.findAllPet(name), HttpStatus.OK);
+            return this.petService.findAllPet(name);
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalArgumentException("Não foi possivel Buscar Pets!");
@@ -29,7 +29,7 @@ public class PetResource {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<PetDto> getPetById(@PathVariable Long id) {
+    public ResponseEntity<PetDto> getByIdPet(@PathVariable Long id) {
         try {
             return this.petService.findByIdPet(id);
         } catch (Exception e) {
@@ -39,7 +39,7 @@ public class PetResource {
     }
 
     @PostMapping
-    public ResponseEntity<PetDto> sendSevePet(@RequestBody PetForm petForm, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<PetDto> sendSevePet(@RequestBody @Valid PetForm petForm, UriComponentsBuilder uriBuilder) {
         try {
             return this.petService.savePet(petForm, uriBuilder);
         } catch (Exception e) {
@@ -48,8 +48,8 @@ public class PetResource {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<PetDto> sendUpdatePet(@PathVariable Long id, @RequestBody PetForm petForm) {
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<PetDto> sendUpdatePet(@PathVariable Long id, @RequestBody @Valid PetForm petForm) {
         try {
             return this.petService.updatePet(id, petForm);
         } catch (Exception e) {
@@ -58,7 +58,7 @@ public class PetResource {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Object> sendRemovePet(@PathVariable Long id) {
         try {
             return this.petService.deletePet(id);
