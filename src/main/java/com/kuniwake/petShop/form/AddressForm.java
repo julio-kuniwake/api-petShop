@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AddressForm {
+public class AddressForm { // 'AddressForm' usado quando é uma requisição que o Usuario envia para API
     private Long id;
     private String cep;
     private String state;

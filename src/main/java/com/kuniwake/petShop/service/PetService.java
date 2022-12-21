@@ -1,6 +1,8 @@
 package com.kuniwake.petShop.service;
 
+import com.kuniwake.petShop.domain.entities.Client;
 import com.kuniwake.petShop.domain.entities.Pet;
+import com.kuniwake.petShop.domain.repository.ClientRepository;
 import com.kuniwake.petShop.domain.repository.PetRepository;
 import com.kuniwake.petShop.dto.PetDto;
 import com.kuniwake.petShop.form.PetForm;
@@ -22,6 +24,9 @@ public class PetService {
 
     @Autowired
     PetRepository petRepository;
+    @Autowired
+    ClientRepository clientRepository;
+
 
     public ResponseEntity<List<PetDto>> findAllPet(String name) {
         List<Pet> pets;
@@ -41,10 +46,14 @@ public class PetService {
     }
 
     public ResponseEntity<PetDto> savePet(PetForm petForm, UriComponentsBuilder uriBuilder) {
-        Pet pet = petForm.convertToPet();
-        petRepository.save(pet);
-        URI uri = uriBuilder.path("/pet/{id}").buildAndExpand(pet.getId()).toUri();
-        return ResponseEntity.created(uri).body(new PetDto(pet));
+        Optional<Client> clientOpt = clientRepository.findById(petForm.getClientId());
+        if (clientOpt.isPresent()) {
+            Pet pet = petForm.convertToPet(clientOpt.get());
+            petRepository.save(pet);
+            URI uri = uriBuilder.path("/pet/{id}").buildAndExpand(pet.getId()).toUri();
+            return ResponseEntity.created(uri).body(new PetDto(pet));
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     public ResponseEntity<PetDto> updatePet(Long id, PetForm petForm) {

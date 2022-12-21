@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class AddressDto {
+public class AddressDto { // 'AddressDto', usado quando uma requisição está saindo da API para o Cliente
     private Long id;
     private String cep;
     private String state;

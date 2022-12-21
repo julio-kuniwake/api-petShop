@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class PetDto {
+public class PetDto { // 'PetDto', usado quando uma requisição está saindo da API para o Cliente
     private Long id;
     private String name;
     private String breed;

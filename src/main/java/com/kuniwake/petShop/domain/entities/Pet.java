@@ -17,14 +17,17 @@ public class Pet {
     private String name;
     private String breed;
     private LocalDate age;
+    @ManyToOne // Muitos 'Pet' para um 'Client'
+    private Client client;
 
     public Pet() {
     }
 
-    public Pet(String name, String breed, LocalDate age) {
+    public Pet(String name, String breed, LocalDate age, Client client) {
         this.name = name;
         this.breed = breed;
         this.age = age;
+        this.client = client;
     }
 
 }
